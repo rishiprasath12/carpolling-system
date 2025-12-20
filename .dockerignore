@@ -1,0 +1,45 @@
+# Compiled class files
+target/
+*.class
+
+# Maven
+.mvn/
+mvnw
+mvnw.cmd
+
+# IDE files
+.idea/
+*.iml
+.vscode/
+.settings/
+.project
+.classpath
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Documentation (not needed in image)
+*.md
+!README.md
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# Test files
+src/test/
+
+# Database files
+*.db
+*.sqlite
+
+# Environment files
+.env
+.env.local
+
+
