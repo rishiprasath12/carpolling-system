@@ -5,6 +5,7 @@ import com.app.carpolling.dto.LoginRequest;
 import com.app.carpolling.dto.UserRegistrationRequest;
 import com.app.carpolling.entity.User;
 import com.app.carpolling.repository.UserRepository;
+import com.app.carpolling.utils.JWTUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -16,14 +17,18 @@ public class UserService {
     
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JWTUtils jwtUtils;
     
     @Transactional
     public AuthResponse registerUser(UserRegistrationRequest request) {
-        if (userRepository.existsByEmail(request.getEmail())) {
-            throw new RuntimeException("Email already registered");
-        }
         if (userRepository.existsByPhone(request.getPhone())) {
             throw new RuntimeException("Phone already registered");
+        }
+        
+        // Check if email is provided and already exists
+        if (request.getEmail() != null && !request.getEmail().isEmpty() 
+            && userRepository.existsByEmail(request.getEmail())) {
+            throw new RuntimeException("Email already registered");
         }
         
         // Validate password strength
@@ -31,7 +36,7 @@ public class UserService {
 
         User user = new User();
         user.setName(request.getName());
-        user.setEmail(request.getEmail());
+        user.setEmail(request.getEmail()); // Can be null
         user.setPhone(request.getPhone());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setRole(request.getRole());
@@ -40,14 +45,13 @@ public class UserService {
         User savedUser = userRepository.save(user);
 
         return new AuthResponse(savedUser.getId(), savedUser.getName(), savedUser.getEmail(),
-            savedUser.getPhone(), savedUser.getRole());
+            savedUser.getPhone(), null, savedUser.getRole());
     }
     
     @Transactional(readOnly = true)
     public AuthResponse login(LoginRequest request) {
-        User user = userRepository.findByEmail(request.getEmailOrPhone())
-            .or(() -> userRepository.findByPhone(request.getEmailOrPhone()))
-            .orElseThrow(() -> new RuntimeException("User not found"));
+        User user = userRepository.findByPhone(request.getPhone())
+            .orElseThrow(() -> new RuntimeException("User not found with this phone number"));
         
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             throw new RuntimeException("Invalid credentials");
@@ -57,8 +61,10 @@ public class UserService {
             throw new RuntimeException("User account is inactive");
         }
 
+        String token = jwtUtils.generateToken(user.getPhone());
+
         return new AuthResponse(user.getId(), user.getName(), user.getEmail(), user.getPhone(),
-            user.getRole());
+            token, user.getRole());
     }
     
     @Transactional(readOnly = true)

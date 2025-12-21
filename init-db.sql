@@ -5,8 +5,8 @@
 CREATE TABLE IF NOT EXISTS users (
     id BIGSERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
-    email VARCHAR(255) NOT NULL UNIQUE,
-    phone VARCHAR(20) NOT NULL UNIQUE,
+    email VARCHAR(255) UNIQUE,                -- Email is optional now
+    phone VARCHAR(20) NOT NULL UNIQUE,        -- Phone is the primary login method
     password VARCHAR(255) NOT NULL,
     role VARCHAR(50) NOT NULL CHECK (role IN ('PASSENGER', 'DRIVER', 'BOTH', 'ADMIN')),
     is_active BOOLEAN NOT NULL DEFAULT true,

@@ -10,8 +10,8 @@ CREATE DATABASE carpolling_db;
 CREATE TABLE users (
     id BIGSERIAL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
-    email VARCHAR(255) NOT NULL UNIQUE,
-    phone VARCHAR(20) NOT NULL UNIQUE,
+    email VARCHAR(255) UNIQUE,                -- Email is optional now
+    phone VARCHAR(20) NOT NULL UNIQUE,        -- Phone is the primary login method
     password VARCHAR(255) NOT NULL,
     role VARCHAR(50) NOT NULL CHECK (role IN ('PASSENGER', 'DRIVER', 'BOTH', 'ADMIN')),
     is_active BOOLEAN NOT NULL DEFAULT true,
@@ -181,12 +181,12 @@ CREATE INDEX idx_payment_status ON payments(status);
 -- Sample Data Insertion (Optional)
 
 -- Insert Sample User (Passenger)
-INSERT INTO users (name, email, phone, password, role) 
-VALUES ('John Doe', 'john@example.com', '9876543210', '$2a$10$encrypted_password_here', 'PASSENGER');
+INSERT INTO users (name, phone, password, role) 
+VALUES ('John Doe', '9876543210', '$2a$10$encrypted_password_here', 'PASSENGER');
 
 -- Insert Sample User (Driver)
-INSERT INTO users (name, email, phone, password, role) 
-VALUES ('Jane Smith', 'jane@example.com', '9876543211', '$2a$10$encrypted_password_here', 'DRIVER');
+INSERT INTO users (name, phone, password, role) 
+VALUES ('Jane Smith', '9876543211', '$2a$10$encrypted_password_here', 'DRIVER');
 
 -- Database Optimization Notes:
 -- 1. All foreign keys have ON DELETE CASCADE for referential integrity

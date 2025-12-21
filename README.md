@@ -113,11 +113,16 @@ Content-Type: application/json
 {
   "name": "John Doe",
   "email": "john@example.com",
-  "phone": "1234567890",
-  "password": "password123",
+  "phone": "9876543210",
+  "password": "SecurePass@123",
   "role": "PASSENGER"
 }
 ```
+
+**Notes:**
+- Phone number is **required** (10 digits)
+- Email is **optional** (can be omitted or null)
+- Password must be at least 8 characters with one uppercase, one number, and one special character
 
 #### Login
 ```
@@ -125,10 +130,12 @@ POST /api/users/login
 Content-Type: application/json
 
 {
-  "emailOrPhone": "john@example.com",
-  "password": "password123"
+  "phone": "9876543210",
+  "password": "SecurePass@123"
 }
 ```
+
+**Note:** Login is phone-based only. Email-based login is not supported.
 
 ### Driver Management
 

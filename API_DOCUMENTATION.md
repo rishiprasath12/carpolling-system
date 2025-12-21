@@ -32,10 +32,15 @@ Register a new user (passenger or driver).
   "name": "John Doe",
   "email": "john@example.com",
   "phone": "9876543210",
-  "password": "securePassword123",
+  "password": "SecurePass@123",
   "role": "PASSENGER"
 }
 ```
+
+**Notes:**
+- **Phone number is required** (10 digits)
+- **Email is optional** (can be null or omitted)
+- **Password requirements:** minimum 8 characters, at least one uppercase letter, one number, and one special character
 
 **Role Values:** `PASSENGER`, `DRIVER`, `BOTH`
 
@@ -49,25 +54,29 @@ Register a new user (passenger or driver).
     "name": "John Doe",
     "email": "john@example.com",
     "phone": "9876543210",
-    "role": "PASSENGER",
-    "token": "JWT_TOKEN_HERE"
+    "role": "PASSENGER"
   }
 }
 ```
 
 ### 1.2 Login
 
-Authenticate user and get token.
+Authenticate user using phone number.
 
 **Endpoint:** `POST /api/users/login`
 
 **Request Body:**
 ```json
 {
-  "emailOrPhone": "john@example.com",
-  "password": "securePassword123"
+  "phone": "9876543210",
+  "password": "SecurePass@123"
 }
 ```
+
+**Notes:**
+- **Login is phone-based only**
+- Phone number must be 10 digits
+- Email-based login is not supported
 
 **Success Response (200 OK):**
 ```json
@@ -79,8 +88,7 @@ Authenticate user and get token.
     "name": "John Doe",
     "email": "john@example.com",
     "phone": "9876543210",
-    "role": "PASSENGER",
-    "token": "JWT_TOKEN_HERE"
+    "role": "PASSENGER"
   }
 }
 ```
