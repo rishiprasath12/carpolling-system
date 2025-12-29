@@ -6,6 +6,8 @@ import com.app.carpolling.dto.LoginRequest;
 import com.app.carpolling.dto.UserDetailsResponse;
 import com.app.carpolling.dto.UserRegistrationRequest;
 import com.app.carpolling.service.UserService;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -38,10 +40,22 @@ public class UserController {
     
     @PostMapping("/login")
     public ResponseEntity<ApiResponse<AuthResponse>> login(
-        @Valid @RequestBody LoginRequest request
+        @Valid @RequestBody LoginRequest request,
+        HttpServletResponse httpServletResponse
     ) {
         try {
             AuthResponse response = userService.login(request);
+            
+            // Create JWT cookie
+            Cookie jwtCookie = new Cookie("jwt", response.getToken());
+            jwtCookie.setHttpOnly(true);  // Prevent XSS attacks
+            jwtCookie.setSecure(false);   // Set to true in production with HTTPS
+            jwtCookie.setPath("/");       // Cookie available for all paths
+            jwtCookie.setMaxAge(24 * 60 * 60);  // Cookie expires in 24 hours
+            
+            // Add cookie to response
+            httpServletResponse.addCookie(jwtCookie);
+            
             return ResponseEntity.ok(ApiResponse.success("Login successful", response));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
