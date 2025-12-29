@@ -186,5 +186,20 @@ public class TripController {
         List<LocationResponseDto> results = routeService.getBoardingLocationsByCity(city);
         return ResponseEntity.ok(ApiResponse.success("Boarding locations retrieved successfully", results));
     }
+    
+    @GetMapping("/driver/{driverId}")
+    public ResponseEntity<ApiResponse<List<Trip>>> getTripsByDriverId(
+        @PathVariable Long driverId
+    ) {
+        try {
+            List<Trip> trips = tripService.getTripsByDriverId(driverId);
+            return ResponseEntity.ok(
+                ApiResponse.success("Trips retrieved successfully", trips)
+            );
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(ApiResponse.error(e.getMessage()));
+        }
+    }
 }
 

@@ -14,6 +14,8 @@ import java.util.List;
 public interface TripRepository extends JpaRepository<Trip, Long> {
     List<Trip> findByDriverIdAndStatus(Long driverId, TripStatus status);
     
+    List<Trip> findByDriverIdOrderByDepartureTimeDesc(Long driverId);
+    
     @Query("SELECT t FROM Trip t WHERE t.route.id IN :routeIds " +
            "AND t.departureTime >= :fromDate " +
            "AND t.departureTime <= :toDate " +

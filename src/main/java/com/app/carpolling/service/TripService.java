@@ -203,6 +203,14 @@ public class TripService {
         return tripRepository.findById(tripId)
             .orElseThrow(() -> new BaseException(ErrorCode.TRIP_NOT_FOUND));
     }
+    
+    @Transactional(readOnly = true)
+    public List<Trip> getTripsByDriverId(Long driverId) {
+        // Validate driver exists
+        driverService.getDriverById(driverId);
+        
+        return tripRepository.findByDriverIdOrderByDepartureTimeDesc(driverId);
+    }
 }
 
 
