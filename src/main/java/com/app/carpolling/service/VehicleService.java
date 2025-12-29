@@ -40,7 +40,7 @@ public class VehicleService {
         vehicle.setVehicleType(request.getVehicleType());
         vehicle.setTotalSeats(request.getTotalSeats());
         vehicle.setPassengerSeats(request.getTotalSeats() - 1); // Excluding driver seat
-        vehicle.setHasAC(request.getHasAC());
+        vehicle.setHasAc(request.getHasAc());
         vehicle.setFeatures(request.getFeatures());
         vehicle.setIsActive(true);
         

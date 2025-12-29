@@ -36,7 +36,7 @@ public class VehicleRegistrationRequest {
     @NotNull(message = "Total seats is required")
     private Integer totalSeats;
     
-    private Boolean hasAC = true;
+    private Boolean hasAc = true;
     
     private String features;
 }

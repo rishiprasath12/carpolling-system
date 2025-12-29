@@ -51,7 +51,7 @@ public class Vehicle {
     private Integer passengerSeats; // Excluding driver seat
     
     @Column(nullable = false)
-    private Boolean hasAC = true;
+    private Boolean hasAc = true;
     
     @Column(columnDefinition = "TEXT")
     private String features; // JSON or comma-separated features

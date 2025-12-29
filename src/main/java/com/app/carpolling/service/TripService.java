@@ -161,7 +161,7 @@ public class TripService {
         response.setVehicleColor(trip.getVehicle().getColor());
         response.setRegistrationNumber(trip.getVehicle().getRegistrationNumber());
         response.setVehicleType(trip.getVehicle().getVehicleType());
-        response.setHasAC(trip.getVehicle().getHasAC());
+        response.setHasAC(trip.getVehicle().getHasAc());
         response.setDepartureTime(trip.getDepartureTime());
         response.setArrivalTime(arrivalTime);
         response.setAvailableSeats(trip.getAvailableSeats());
