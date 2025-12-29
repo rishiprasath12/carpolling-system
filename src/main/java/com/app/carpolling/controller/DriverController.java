@@ -93,6 +93,19 @@ public class DriverController {
                 .body(ApiResponse.error(e.getMessage()));
         }
     }
+    
+    @GetMapping("/{driverId}/routes")
+    public ResponseEntity<ApiResponse<List<Route>>> getDriverRoutes(
+        @PathVariable Long driverId
+    ) {
+        try {
+            List<Route> routes = routeService.getRoutesByDriverId(driverId);
+            return ResponseEntity.ok(ApiResponse.success("Routes retrieved successfully", routes));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(ApiResponse.error(e.getMessage()));
+        }
+    }
 }
 
 

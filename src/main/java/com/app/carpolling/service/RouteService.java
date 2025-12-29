@@ -159,5 +159,10 @@ public class RouteService {
             ))
             .collect(Collectors.toList());
     }
+    
+    @Transactional(readOnly = true)
+    public List<Route> getRoutesByDriverId(Long driverId) {
+        return routeRepository.findByDriverIdAndIsActiveTrue(driverId);
+    }
 }
 
